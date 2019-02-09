@@ -108,10 +108,11 @@ class OscappsAccordion {
   }
 
   _showSection (element) {
+    this.ajaxContent && this._checkAjaxSection(element)
+
     DomLib.addClass(element, ACTIVE_CLASS_NAME)
     this._setMaxHeightContentSectionToFull(element)
 
-    !!this.ajaxContent && this._checkAjaxSection(element)
     this._isFunction(this.onOpen) && this.onOpen()
   }
 
@@ -150,7 +151,7 @@ class OscappsAccordion {
     // @TODO refactor
     for (const ajaxContent of this.ajaxContent) {
       if (ajaxContent.section === index && !sectionsHeaders[index].getAttribute('content-loaded')) {
-        sectionsHeaders[index].nextElementSibling.innerHTML = '<div class="spinner"><div class="lds-dual-ring"></div></div>'
+        sectionsHeaders[index].nextElementSibling.innerHTML = '<div class="OscappsSpinner"><div class="OscappsSpinner--ring"></div></div>'
         const htmlContent = await this._getAjaxData(ajaxContent)
         sectionsHeaders[index].nextElementSibling.innerHTML = htmlContent
         sectionsHeaders[index].setAttribute('content-loaded', true)
