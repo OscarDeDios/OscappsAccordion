@@ -41,7 +41,7 @@ $animation-default-time: 0.6s;
       display:none;
     }
 
-    &.OscappsAccordion--active:before {
+    &.is-active:before {
       transform: rotate(135deg);
     }
   }

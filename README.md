@@ -31,8 +31,13 @@ Or with yarn
 </dl>`
 ```
 
+## Browser compatibility
 
-## Licence
+* Newest two browser versions of Chrome, Firefox, Safari and Edge
+* IE 11
+
+
+## License
 
 _OscappsAccordion_ is available under MIT.
 

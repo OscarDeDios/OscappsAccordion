@@ -2,7 +2,6 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 const extractSass = new ExtractTextPlugin({
   filename: 'OscappsAccordion.css'
@@ -71,9 +70,6 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: 'index.html'
     }),
-    extractSass,
-    new CopyWebpackPlugin([
-      {from: 'assets', to: 'assets'}
-    ])
+    extractSass
   ]
 }
