@@ -1,6 +1,7 @@
 coverage/
 dist/
 node_modules/
+out/
 .idea/
 *.iml
 npm-debug.log
