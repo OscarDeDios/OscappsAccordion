@@ -12,6 +12,26 @@
         font-family: 'Roboto', helvetica, sans-serif;
       }
     </style>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const instance = new OscappsAccordion(document.getElementById('OscappsAccordion-ajax'), {
+          animationTime: 800
+        })
+
+        setTimeout(function () {
+          instance.toggle(1)
+        }, 2000)
+
+        setTimeout(function () {
+          instance.toggle(1)
+        }, 4000)
+
+        // const OscappsAccordion1 = new OscappsAccordion(document.getElementById('OscappsAccordion1'))
+        // const OscappsAccordion2 = new OscappsAccordion(document.getElementById('OscappsAccordion2'), { multipleSelection: false })
+        // console.log(OscappsAccordion2)
+      })
+    </script>
+
   </head>
   <body>
     <div class="container">
@@ -51,7 +71,7 @@
       </code></pre>
 
       <h2>Selección múltiple</h2>
-      <dl id="OscappsAccordion2" class="OscappsAccordion multiple-selection">
+      <dl id="OscappsAccordion2" class="OscappsAccordion is-multiple-selection">
         <dt class="active">Section 1</dt>
           <dd>
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ac mauris ac lacus finibus venenatis eget fringilla odio. Nulla ligula nulla, vestibulum nec consectetur at, ornare sed felis. Pellentesque mattis, urna finibus eleifend aliquet, est leo ultrices eros, in varius felis massa egestas magna. Aliquam non est sollicitudin, vestibulum lacus vitae, rhoncus ex. Mauris rhoncus tellus leo, id suscipit lectus bibendum in. Nunc nec fringilla risus, ut tincidunt eros. Sed justo dui, placerat et neque ut, sollicitudin consequat nibh. Mauris interdum enim ut leo ornare, placerat blandit libero mollis. Aliquam molestie sagittis fermentum. Nulla fermentum nibh vitae sapien congue lobortis. Suspendisse ac diam ac lacus suscipit vulputate. Suspendisse vel viverra turpis.</p>
@@ -66,6 +86,23 @@
             <p>Nunc auctor, ex vitae porta luctus, purus elit eleifend enim, id dictum augue risus eget massa. Etiam imperdiet lectus neque, eu ultricies eros dapibus in. Etiam facilisis justo sed magna fringilla, at placerat felis eleifend. Proin eget enim porta, eleifend sem sed, rhoncus dolor. Ut congue quam at facilisis tristique. Quisque eleifend est vel magna gravida rhoncus. Suspendisse potenti. Nullam quis augue congue, auctor sem eu, rhoncus enim. Nulla eros elit, pulvinar at odio et, blandit imperdiet mi. Etiam ut eleifend leo, et sagittis nisi.</p>
           </dd>
         </dl>
+
+        <h2>Prueba</h2>
+        <dl id="OscappsAccordion-ajax" class="OscappsAccordion is-instance">
+          <dt>Section 1</dt>
+            <dd>
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ac mauris ac lacus finibus venenatis eget fringilla odio. Nulla ligula nulla, vestibulum nec consectetur at, ornare sed felis. Pellentesque mattis, urna finibus eleifend aliquet, est leo ultrices eros, in varius felis massa egestas magna. Aliquam non est sollicitudin, vestibulum lacus vitae, rhoncus ex. Mauris rhoncus tellus leo, id suscipit lectus bibendum in. Nunc nec fringilla risus, ut tincidunt eros. Sed justo dui, placerat et neque ut, sollicitudin consequat nibh. Mauris interdum enim ut leo ornare, placerat blandit libero mollis. Aliquam molestie sagittis fermentum. Nulla fermentum nibh vitae sapien congue lobortis. Suspendisse ac diam ac lacus suscipit vulputate. Suspendisse vel viverra turpis.</p>
+            </dd>
+            <dt>Section 2</dt>
+            <dd>
+              <p>Integer sollicitudin hendrerit odio, eu facilisis leo. Nullam dictum dui eu turpis ultrices, at tempor enim finibus. Integer ullamcorper lobortis porta. Pellentesque non ex mattis, convallis massa vel, laoreet elit. Cras at semper risus. Donec efficitur metus quis felis luctus hendrerit in eget enim. Integer gravida elit et mauris dignissim molestie. Nam malesuada justo vel mi auctor, eget rutrum libero scelerisque. Vestibulum odio ipsum, facilisis ut orci quis, rutrum ultrices dolor. Nulla in pretium felis.</p>
+              <p>Integer sollicitudin hendrerit odio, eu facilisis leo. Nullam dictum dui eu turpis ultrices, at tempor enim finibus. Integer ullamcorper lobortis porta. Pellentesque non ex mattis, convallis massa vel, laoreet elit. Cras at semper risus. Donec efficitur metus quis felis luctus hendrerit in eget enim. Integer gravida elit et mauris dignissim molestie. Nam malesuada justo vel mi auctor, eget rutrum libero scelerisque. Vestibulum odio ipsum, facilisis ut orci quis, rutrum ultrices dolor. Nulla in pretium felis.</p>
+            </dd>
+            <dt>Section 3</dt>
+            <dd>
+              <p>Nunc auctor, ex vitae porta luctus, purus elit eleifend enim, id dictum augue risus eget massa. Etiam imperdiet lectus neque, eu ultricies eros dapibus in. Etiam facilisis justo sed magna fringilla, at placerat felis eleifend. Proin eget enim porta, eleifend sem sed, rhoncus dolor. Ut congue quam at facilisis tristique. Quisque eleifend est vel magna gravida rhoncus. Suspendisse potenti. Nullam quis augue congue, auctor sem eu, rhoncus enim. Nulla eros elit, pulvinar at odio et, blandit imperdiet mi. Etiam ut eleifend leo, et sagittis nisi.</p>
+            </dd>
+          </dl>
     </div>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/prism.min.js"></script>
   </body>

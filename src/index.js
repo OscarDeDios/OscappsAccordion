@@ -6,7 +6,7 @@ import OscappsAccordion from './js/OscappsAccordion'
 import './scss/styles.scss'
 
 document.addEventListener('DOMContentLoaded', () => {
-  const OscappsAccordionElements = document.querySelectorAll('.OscappsAccordion:not(.is-instanced)')
+  const OscappsAccordionElements = document.querySelectorAll('.OscappsAccordion:not(.is-instance)')
   let instance = []
 
   for (let OscappsAccordionElement of OscappsAccordionElements) {

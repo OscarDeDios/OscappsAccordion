@@ -9,7 +9,7 @@ module.exports = Merge(CommonConfig, {
   ],
   devServer: {
     publicPath: '/',
-    port: 9000,
+    port: 9001,
     contentBase: path.join(process.cwd(), 'dist'),
     host: 'localhost',
     historyApiFallback: true,

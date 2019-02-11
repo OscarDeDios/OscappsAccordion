@@ -5,7 +5,7 @@ const HEADER_SECTION_SELECTOR = `.${DEFAULT_OSCAPPS_ACCORDION_CLASS_NAME} > dt`
 const CONTENT_SECTION_SELECTOR = `.${DEFAULT_OSCAPPS_ACCORDION_CLASS_NAME} > dd`
 const ACTIVE_CLASS_NAME = 'is-active'
 const HIDE_ICON_CLASS_NAME = 'OscappsAccordion--hide-icon'
-const MULTIPLE_SELECTION_CLASS_NAME = 'multiple-selection'
+const MULTIPLE_SELECTION_CLASS_NAME = 'is-multiple-selection'
 const TOGGLE_OSCAPPS_ACCORDION_TAG_NAME = 'DT'
 
 const AJAX_SPINNER = '<div class="OscappsSpinner"><div class="OscappsSpinner--ring"></div></div>'
@@ -303,6 +303,14 @@ class OscappsAccordion {
     const sectionsHeader = this._getHeaderSections()
 
     return sectionsHeader[indexSection] && DomLib.hasClass(sectionsHeader[indexSection], ACTIVE_CLASS_NAME)
+  }
+
+  toggle (indexSection) {
+    if (this.isOpen(indexSection)) {
+      this.close(indexSection)
+    } else {
+      this.open(indexSection)
+    }
   }
 
   _getElementSectionByIndex (indexSection) {
