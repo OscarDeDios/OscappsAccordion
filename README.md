@@ -1,4 +1,4 @@
-# OscappsAccordion plugin
+# Oscapps Accordion plugin
 
 Awesome accordion plugin
 
@@ -6,11 +6,32 @@ Demo page: https://oscardedios.github.io/
 
 ## Plugin installation
 
+#### Usage with Webpack, Browserify, & Other Bundlers
+
+Install dependency:
+
 `npm install oscapps-accordion`
 
 Or with yarn
 
 `yarn add oscapps-accordion`
+
+You can then import into your bundle:
+
+```javascript
+import OscappsAccordion from 'oscapps-accordion'
+```
+
+#### Including the js and css (old style)
+
+Download js and css or use de npm CDN (current version example)
+
+```html
+<link href="https://unpkg.com/oscapps-accordion@1.0.5/dist/OscappsAccordion.min.css" rel="stylesheet">
+
+<script type="text/javascript" src="https://unpkg.com/oscapps-accordion@1.0.5/dist/OscappsAccordion.min.js"></script></body>
+
+```
 
 ## Basic Usage
 

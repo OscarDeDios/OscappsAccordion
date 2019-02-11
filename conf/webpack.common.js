@@ -4,7 +4,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 const extractSass = new ExtractTextPlugin({
-  filename: 'OscappsAccordion.css'
+  filename: 'OscappsAccordion.min.css'
 })
 
 module.exports = {
