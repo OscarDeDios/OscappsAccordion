@@ -2,14 +2,11 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/themes/prism-okaidia.min.css" rel="stylesheet">
     <title>OscappsAccordion</title>
 
     <style>
       .container {
         padding: 40px;
-        font-family: 'Roboto', helvetica, sans-serif;
       }
     </style>
     <script>
@@ -37,6 +34,40 @@
     <div class="container">
       <h1>Ejemplo de uso de plugin de acordeón.</h1>
 
+      <div class="OscappsAccordion">
+        <div class="OscappsAccordion-header">
+          Section 1
+        </div>
+        <div class="OscappsAccordion-section">
+          <dl class="OscappsAccordion">
+            <dt class="is-active">Section 1</dt>
+            <dd>
+              <p>Content section 1.</p>
+            </dd>
+            <dt>Section 2</dt>
+            <dd>
+              <p>Content section 2.</p>
+            </dd>
+            <dt>Section 3</dt>
+            <dd>
+              <p>Content section 3.</p>
+            </dd>
+          </dl>
+        </div>
+        <div class="OscappsAccordion-header">
+          Section 2
+        </div>
+        <div class="OscappsAccordion-section">
+          Content Section 2
+        </div>
+        <div class="OscappsAccordion-header">
+          Section 3
+        </div>
+        <div class="OscappsAccordion-section">
+          Content Section 3
+        </div>
+      </div>
+
       <h2>Ejemplo básico</h2>
       <dl class="OscappsAccordion">
         <dt class="is-active">Section 1</dt>
@@ -52,23 +83,6 @@
           <p>Content section 3.</p>
         </dd>
       </dl>
-
-      <pre><code class="language-markup">
-        &lt;dl id=&quot;OscappsAccordion1&quot; class=&quot;OscappsAccordion&quot;&gt;
-          &lt;dt&gt;Section 1&lt;/dt&gt;
-          &lt;dd&gt;
-            &lt;p&gt;Content Section1&lt;/p&gt;
-          &lt;/dd&gt;
-          &lt;dt&gt;Section 2&lt;/dt&gt;
-          &lt;dd&gt;
-            &lt;p&gt;Content Section2.&lt;/p&gt;
-          &lt;/dd&gt;
-          &lt;dt&gt;Section 3&lt;/dt&gt;
-          &lt;dd&gt;
-            &lt;p&gt;Content Section 3.&lt;/p&gt;
-          &lt;/dd&gt;
-        &lt;/dl&gt;
-      </code></pre>
 
       <h2>Selección múltiple</h2>
       <dl id="OscappsAccordion2" class="OscappsAccordion is-multiple-selection">
@@ -104,6 +118,5 @@
             </dd>
           </dl>
     </div>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/prism.min.js"></script>
   </body>
 </html>

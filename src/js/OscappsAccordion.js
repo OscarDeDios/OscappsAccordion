@@ -1,15 +1,19 @@
 import DomLib from './lib/DomLib'
 
-const DEFAULT_OSCAPPS_ACCORDION_CLASS_NAME = 'OscappsAccordion'
-const HEADER_SECTION_SELECTOR = `.${DEFAULT_OSCAPPS_ACCORDION_CLASS_NAME} > dt`
-const CONTENT_SECTION_SELECTOR = `.${DEFAULT_OSCAPPS_ACCORDION_CLASS_NAME} > dd`
+const MAIN_CLASS_NAME = 'OscappsAccordion'
+const HEADER_CLASS_NAME = 'OscappsAccordion-header'
+const SECTION_CLASS_NAME = 'OscappsAccordion-section'
 const ACTIVE_CLASS_NAME = 'is-active'
 const HIDE_ICON_CLASS_NAME = 'OscappsAccordion--hide-icon'
 const MULTIPLE_SELECTION_CLASS_NAME = 'is-multiple-selection'
+
+const HEADER_SECTION_SELECTOR = `.${MAIN_CLASS_NAME} > dt, .${MAIN_CLASS_NAME} > .${HEADER_CLASS_NAME}`
+const CONTENT_SECTION_SELECTOR = `.${MAIN_CLASS_NAME} > dd, .${MAIN_CLASS_NAME} > .${SECTION_CLASS_NAME}`
 const TOGGLE_OSCAPPS_ACCORDION_TAG_NAME = 'DT'
 
 const AJAX_SPINNER = '<div class="OscappsSpinner"><div class="OscappsSpinner--ring"></div></div>'
 const AJAX_READ_MARK = 'content-loaded'
+const AJAX_LOAD_ERROR = 'Loading error'
 
 /**
  * Plugin para mostrar y ocultar secciones de una lista con un efecto de "deslizamiento"
@@ -46,8 +50,8 @@ class OscappsAccordion {
 
     this._initActiveSections()
 
-    if (!DomLib.hasClass(this.OscappsAccordionElement, DEFAULT_OSCAPPS_ACCORDION_CLASS_NAME)) {
-      DomLib.addClass(this.OscappsAccordionElement, DEFAULT_OSCAPPS_ACCORDION_CLASS_NAME)
+    if (!DomLib.hasClass(this.OscappsAccordionElement, MAIN_CLASS_NAME)) {
+      DomLib.addClass(this.OscappsAccordionElement, MAIN_CLASS_NAME)
     }
 
     animationTime && animationTime >= 0 && this._changeDefaultAnimationTime(animationTime)
@@ -93,7 +97,9 @@ class OscappsAccordion {
    * @memberof OscappsAccordion
    */
   _isHeaderSection (element) {
-    return element.tagName === TOGGLE_OSCAPPS_ACCORDION_TAG_NAME && element.parentElement === this.OscappsAccordionElement
+    return (element.tagName === TOGGLE_OSCAPPS_ACCORDION_TAG_NAME ||
+      DomLib.hasClass(element, HEADER_CLASS_NAME)) &&
+      element.parentElement === this.OscappsAccordionElement
   }
 
   /**
@@ -179,7 +185,7 @@ class OscappsAccordion {
   _hideOtherActiveSection () {
     const activeElement = this.OscappsAccordionElement.querySelector(`.${ACTIVE_CLASS_NAME}`)
 
-    if (activeElement) {
+    if (activeElement && activeElement.parentElement === this.OscappsAccordionElement) {
       DomLib.removeClass(activeElement, ACTIVE_CLASS_NAME)
       this._resetMaxHeightContentSection(activeElement)
     }
@@ -263,7 +269,7 @@ class OscappsAccordion {
         return response.text()
       })
       .catch((response) => {
-        console.log(response)
+        return AJAX_LOAD_ERROR
       })
   }
 
