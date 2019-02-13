@@ -4,14 +4,14 @@ const MAIN_CLASS_NAME = 'OscappsAccordion'
 const HEADER_CLASS_NAME = 'OscappsAccordion-header'
 const SECTION_CLASS_NAME = 'OscappsAccordion-section'
 const ACTIVE_CLASS_NAME = 'is-active'
-const HIDE_ICON_CLASS_NAME = 'OscappsAccordion--hide-icon'
+const HIDE_ICON_CLASS_NAME = 'OscappsAccordion--hidden-icon'
 const MULTIPLE_SELECTION_CLASS_NAME = 'is-multiple-selection'
 
 const HEADER_SECTION_SELECTOR = `.${MAIN_CLASS_NAME} > dt, .${MAIN_CLASS_NAME} > .${HEADER_CLASS_NAME}`
 const CONTENT_SECTION_SELECTOR = `.${MAIN_CLASS_NAME} > dd, .${MAIN_CLASS_NAME} > .${SECTION_CLASS_NAME}`
 const TOGGLE_OSCAPPS_ACCORDION_TAG_NAME = 'DT'
 
-const AJAX_SPINNER = '<div class="OscappsSpinner"><div class="OscappsSpinner--ring"></div></div>'
+const AJAX_SPINNER = '<div class="OscappsSpinner"><div class="OscappsSpinner-ring"></div></div>'
 const AJAX_READ_MARK = 'content-loaded'
 const AJAX_LOAD_ERROR = 'Loading error'
 
@@ -24,7 +24,7 @@ class OscappsAccordion {
   /**
    * Crea una instancia de OscappsAccordion sobre una "description list" (dl). Trata los valores de las opciones de creación.
    *
-   * @param {object} element elemento DOM (dl) sobre el que se va a crear el efecto acordeón
+   * @param {object} element elemento DOM sobre el que se va a crear el efecto acordeón
    * @param {object} {} opciones de creación del plugin con los valores por defecto inicializados
    * @memberof OscappsAccordion
    */
@@ -64,11 +64,7 @@ class OscappsAccordion {
    * @memberof OscappsAccordion
    */
   _hideArrowIcon () {
-    const sectionsHeader = this._getHeaderSections()
-
-    for (let sectionHeader of sectionsHeader) {
-      DomLib.addClass(sectionHeader, HIDE_ICON_CLASS_NAME)
-    }
+    DomLib.addClass(this.OscappsAccordionElement, HIDE_ICON_CLASS_NAME)
   }
 
   /**
@@ -88,11 +84,12 @@ class OscappsAccordion {
   }
 
   /**
-   * Comprueba si el elemento es una cabecera de sección (un dt), también comprueba que el dt sea hijo directo del dl principal
-   * de esta forma dentro de una sección se podría tener un dl normal sin problema o incluso otra acordeón anidada.
+   * Comprueba si el elemento es una cabecera de sección (un dt u otro elemento con la clase de header), también comprueba
+   * que el header sea hijo directo del componente principal de esta forma dentro de una sección se podría tener un dl
+   * normal sin problema o incluso otra acordeón anidada.
    *
    * @param {object} element elemnto DOM sobre el que se ha hecho click
-   * @returns {boolean} true si el elemento es una cabera de sección (dt)
+   * @returns {boolean} true si el elemento es una cabera de sección
    * @private
    * @memberof OscappsAccordion
    */
@@ -168,6 +165,7 @@ class OscappsAccordion {
 
   /**
   * Muestra la sección. Ejecuta el callback de apertura si se ha informado en las opciones.
+  * Si hay definido contenido ajax accede a él.
   *
   * @param {object} element elemento DOM de la cabecera de la sección a mostrar
   * @private
@@ -182,12 +180,17 @@ class OscappsAccordion {
     this._isFunction(this.onOpen) && this.onOpen()
   }
 
+  /**
+   * Oculta la sección activa en caso que exista.
+   *
+   * @private
+   * @memberof OscappsAccordion
+   */
   _hideOtherActiveSection () {
     const activeElement = this.OscappsAccordionElement.querySelector(`.${ACTIVE_CLASS_NAME}`)
 
     if (activeElement && activeElement.parentElement === this.OscappsAccordionElement) {
-      DomLib.removeClass(activeElement, ACTIVE_CLASS_NAME)
-      this._resetMaxHeightContentSection(activeElement)
+      this._hideSection(activeElement)
     }
   }
 
@@ -216,9 +219,10 @@ class OscappsAccordion {
   }
 
   /**
-  * Función asíncrona que carga contenido de una sección mediante Ajax. Sólo la lee una vez.
+  * Función asíncrona que carga contenido de una sección mediante Ajax.
   *
-  * @param {object} element
+  * @private
+  * @param {object} element elemento DOM, cabecera de sección que se quiere mostrar.
   * @memberof OscappsAccordion
   */
   async _checkAjaxSection (element) {
@@ -227,7 +231,7 @@ class OscappsAccordion {
     var index = this._getIndexElement(headerSections, element)
 
     for (const ajaxContent of this.ajaxContent) {
-      if (ajaxContent.indexSection === index && !this._isAlreadyRead(headerSections, index)) {
+      if (ajaxContent.indexSection === index && !this._isAlreadyRead(headerSections[index])) {
         let headerSection = headerSections[index]
         let contentSection = headerSection.nextElementSibling
 
@@ -238,31 +242,79 @@ class OscappsAccordion {
         contentSection.innerHTML = htmlContent
         this._setMaxHeightContentSectionToFull(headerSection)
 
-        this._markAsRead(headerSections, index)
+        this._markAsRead(headerSections[index])
       }
     }
   }
 
-  _isAlreadyRead (headerSections, index) {
-    return headerSections[index].getAttribute(AJAX_READ_MARK)
+  /**
+   * Comprueba si existe el atributo de accesso a ajax ya realizado
+   *
+   * @param {object} headerSection cabecera de sección que se quiere consultar
+   * @returns {boolean} retorna true si existe el atributo de lectura
+   * @private
+   * @memberof OscappsAccordion
+   */
+  _isAlreadyRead (headerSection) {
+    return headerSection.getAttribute(AJAX_READ_MARK)
   }
 
-  _markAsRead (headerSections, index) {
-    headerSections[index].setAttribute(AJAX_READ_MARK, true)
+  /**
+   * Marca con atributo de ya yeido la cabecera de sección
+   *
+   * @private
+   * @param {object} headerSection elemento Dom de cabecera de sección
+   * @memberof OscappsAccordion
+   */
+  _markAsRead (headerSection) {
+    headerSection.setAttribute(AJAX_READ_MARK, true)
   }
 
+  /**
+   *  Obtiene el índice del elemento DOM dentro de la lista que llega como parámetro
+   *
+   * @param {array} elementList lista de elementos DOM
+   * @param {object} element elemento DOM
+   *
+   * @returns {integer} retorna el índice del elemento de entrada dentro de la lista de elementos
+   * @private
+   * @memberof OscappsAccordion
+   */
   _getIndexElement (elementList, element) {
     return Array.prototype.indexOf.call(elementList, element)
   }
 
+  /**
+   * Obtiene una lista de elemntos DOM de cabeceras de sección
+   *
+   * @returns {array} lista de elemntos DOM de cabeceras de sección
+   * @private
+   * @memberof OscappsAccordion
+   */
   _getHeaderSections () {
     return this.OscappsAccordionElement.querySelectorAll(HEADER_SECTION_SELECTOR)
   }
 
+  /**
+  * Obtiene una lista de elemnetos DOM de secciones (contenido de las acordeones)
+  *
+  * @returns {array} lista de elemntos DOM de secciones
+  * @private
+  * @memberof OscappsAccordion
+  */
   _getContentSections () {
     return this.OscappsAccordionElement.querySelectorAll(CONTENT_SECTION_SELECTOR)
   }
 
+  /**
+   * Accede a la url y retorna una promise. En caso de éxito la promise resuelve con el texto leido y en caso de
+   * error con un mensaje de error.
+   *
+   * @param {string} url
+   * @returns {promise} promise que resuelve al acabar el acceso.
+   * @private
+   * @memberof OscappsAccordion
+   */
   _getAjaxData (url) {
     return fetch(url)
       .then((response) => {
@@ -273,6 +325,25 @@ class OscappsAccordion {
       })
   }
 
+  /**
+   * Comprueba si el objeto de entrada es una función
+   *
+   * @param {object} f
+   * @returns {boolean} retorna true si el parámetro de entrada es una función
+   * @private
+   * @memberof OscappsAccordion
+   */
+  _isFunction (f) {
+    return Object.prototype.toString.call(f) === '[object Function]'
+  }
+
+  /**
+   * Abre la sección con el índice pasado como parámetro.
+   *
+   * @param {integer} indexSection índice de la sección a abrir
+   * @returns {object} retorna la propia clase para poder encadenar métodos
+   * @memberof OscappsAccordion
+   */
   open (indexSection) {
     const elementSection = this._getElementSectionByIndex(indexSection)
     elementSection && this._showSection(elementSection)
@@ -280,6 +351,12 @@ class OscappsAccordion {
     return this
   }
 
+  /**
+  * Abre todas las secciones
+  *
+  * @returns {object} retorna la propia clase para poder encadenar métodos
+  * @memberof OscappsAccordion
+  */
   openAll () {
     const sectionsHeader = this._getHeaderSections()
 
@@ -290,6 +367,13 @@ class OscappsAccordion {
     return this
   }
 
+  /**
+  * Cierra la sección con el índice pasado como parámetro.
+  *
+  * @param {integer} indexSection índice de la sección a cerrar
+  * @returns {object} retorna la propia clase para poder encadenar métodos
+  * @memberof OscappsAccordion
+  */
   close (indexSection) {
     const elementSection = this._getElementSectionByIndex(indexSection)
     elementSection && this._hideSection(elementSection)
@@ -297,6 +381,12 @@ class OscappsAccordion {
     return this
   }
 
+  /**
+  * Cierra todas las secciones
+  *
+  * @returns {object} retorna la propia clase para poder encadenar métodos
+  * @memberof OscappsAccordion
+  */
   closeAll () {
     const sectionsHeader = this._getHeaderSections()
 
@@ -305,26 +395,46 @@ class OscappsAccordion {
     }
   }
 
+  /**
+   * Comprueba si la sección pasada como parámetro está abierta
+   *
+   * @param {integer} indexSection índice de la sección a cerrar
+   * @returns retorna true si la sección está abierta, false en caso contrario.
+   * @memberof OscappsAccordion
+   */
   isOpen (indexSection) {
     const sectionsHeader = this._getHeaderSections()
 
     return sectionsHeader[indexSection] && DomLib.hasClass(sectionsHeader[indexSection], ACTIVE_CLASS_NAME)
   }
 
+  /**
+  * Abre la sección identificada con el índice si está cerrada o la cierra si está abierta.
+  *
+  * @param {integer} indexSection índice de la sección a abrir o cerrar
+  * @returns {object} retorna la propia clase para poder encadenar métodos
+  * @memberof OscappsAccordion
+  */
   toggle (indexSection) {
     if (this.isOpen(indexSection)) {
       this.close(indexSection)
     } else {
       this.open(indexSection)
     }
+
+    return this
   }
 
+  /**
+   * Retorna la cabecera de sección especificada por el índice.
+   *
+   * @param {integer} indexSection
+   * @returns {object} elemento DOM especificado por el índice
+   * @private
+   * @memberof OscappsAccordion
+   */
   _getElementSectionByIndex (indexSection) {
     return this._getHeaderSections()[indexSection]
-  }
-
-  _isFunction (f) {
-    return Object.prototype.toString.call(f) === '[object Function]'
   }
 }
 

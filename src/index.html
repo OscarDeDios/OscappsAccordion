@@ -12,7 +12,8 @@
     <script>
       document.addEventListener('DOMContentLoaded', function () {
         const instance = new OscappsAccordion(document.getElementById('OscappsAccordion-ajax'), {
-          animationTime: 800
+          animationTime: 800,
+          arrowIcon:false
         })
 
         setTimeout(function () {
@@ -48,10 +49,6 @@
             <dd>
               <p>Content section 2.</p>
             </dd>
-            <dt>Section 3</dt>
-            <dd>
-              <p>Content section 3.</p>
-            </dd>
           </dl>
         </div>
         <div class="OscappsAccordion-header">
@@ -72,7 +69,21 @@
       <dl class="OscappsAccordion">
         <dt class="is-active">Section 1</dt>
         <dd>
-          <p>Content section 1.</p>
+          <dl class="OscappsAccordion">
+            <dt class="is-active">Section 1</dt>
+            <dd>
+              <p>Content section 1.</p>
+            </dd>
+            <dt>Section 2</dt>
+            <dd>
+              <dl class="OscappsAccordion">
+                <dt class="is-active">Section 1</dt>
+                <dd>
+                  <p>Content section 1.</p>
+                </dd>
+              </dl>
+            </dd>
+          </dl>
         </dd>
         <dt>Section 2</dt>
         <dd>

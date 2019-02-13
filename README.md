@@ -29,7 +29,7 @@ Download js and css or use de npm CDN (current version example)
 ```html
 <link href="https://unpkg.com/oscapps-accordion@1.0.5/dist/OscappsAccordion.min.css" rel="stylesheet">
 
-<script type="text/javascript" src="https://unpkg.com/oscapps-accordion@1.0.5/dist/OscappsAccordion.min.js"></script></body>
+<script type="text/javascript" src="https://unpkg.com/oscapps-accordion@1.0.5/dist/OscappsAccordion.min.js"></script>
 
 ```
 
@@ -52,6 +52,27 @@ For a basic usage, simply add OscappsAccordion class to a [definition list (dl)]
     <p>Content section 1.</p>
   </dd>
 </dl>`
+```
+
+##Usage with DIV and name classes
+
+The plugin is mainly designed to use with dl's but you can use div's to specifying the header and content section with **OscappsAccordion-header** and **OscappsAccordion-section** classes.
+
+```html
+<div class="OscappsAccordion">
+  <div class="OscappsAccordion-header">
+    Section 1
+  </div>
+  <div class="OscappsAccordion-section">
+    Content Section 1
+  </div>
+  <div class="OscappsAccordion-header">
+    Section 2
+  </div>
+  <div class="OscappsAccordion-section">
+    Content Section 2
+  </div>
+</div>
 ```
 ## Multiple Selection
 
@@ -100,27 +121,25 @@ const instance = new OscappsAccordion(dlElement, options)
 
 ## Options
 
-Oscapps Accordion provides several options to customize its behaviour:
+Oscapps Accordion provides several options to customize its behaviour (default value in brackets):
 
-#### multipleSelection (Boolean)
+#### multipleSelection (false)
 
 Used to set the multiple selection, already explained above.
 
 ```javascript
 const instance = new OscappsAccordion(dlElement, { multipleSelection: true })
 ```
-Defaults to false.
 
-#### arrowIcon (Boolean)
+#### arrowIcon (true)
 
 Used to remove the default arrow icon that is used to indicate if the section is open.
 
 ```javascript
 const instance = new OscappsAccordion(dlElement, { arrowIcon: false })
 ```
-Defaults to true.
 
-#### animationTime (Integer)
+#### animationTime (600)
 
 Used to set the animation time in miliseconds. The sections are hide and showed with a slide animation, this animation will
 take <i>animationTime</i> to finish.
@@ -128,9 +147,8 @@ take <i>animationTime</i> to finish.
 ```javascript
 const instance = new OscappsAccordion(dlElement, { animationTime: 1200 })
 ```
-Defaults to 600.
 
-#### onOpen (function)
+#### onOpen (false)
 
 Callback to execute when a section is opened.
 
@@ -141,9 +159,8 @@ const callback = () => {
 
 const instance = new OscappsAccordion(dlElement, { onOpen: callback})
 ```
-Defaults to false.
 
-#### ajaxContent (array)
+#### ajaxContent (false)
 
 It's possible to assing ajax content to one or more sections. The parameter is an array of objects.<br><br>
 The object has two fields:
@@ -164,7 +181,6 @@ const instance = new OscappsAccordion(dlElement, {
   }]
 })
 ```
-Defaults to false.
 
 
 ## Methods
