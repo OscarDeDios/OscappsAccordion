@@ -27,9 +27,9 @@ import OscappsAccordion from 'oscapps-accordion'
 Download js and css or use de npm CDN (current version example)
 
 ```html
-<link href="https://unpkg.com/oscapps-accordion@1.0.5/dist/OscappsAccordion.min.css" rel="stylesheet">
+<link href="https://unpkg.com/oscapps-accordion@1.0.8/dist/OscappsAccordion.min.css" rel="stylesheet">
 
-<script type="text/javascript" src="https://unpkg.com/oscapps-accordion@1.0.5/dist/OscappsAccordion.min.js"></script>
+<script type="text/javascript" src="https://unpkg.com/oscapps-accordion@1.0.8/dist/OscappsAccordion.min.js"></script>
 
 ```
 
