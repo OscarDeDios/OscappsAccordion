@@ -54,7 +54,7 @@ For a basic usage, simply add OscappsAccordion class to a [definition list (dl)]
 </dl>`
 ```
 
-##Usage with DIV and name classes
+## Usage with DIV and name classes
 
 The plugin is mainly designed to use with dl's but you can use div's to specifying the header and content section with **OscappsAccordion-header** and **OscappsAccordion-section** classes.
 
