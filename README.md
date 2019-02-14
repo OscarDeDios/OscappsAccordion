@@ -74,7 +74,7 @@ The plugin is mainly designed to use with dl's but you can use div's to specifyi
   </div>
 </div>
 ```
-## Multiple Selection
+## Multiple Selection and open section by default
 
 <p>Add <b><i>is-multiple-selection</i></b> class to have the possibility to open more than one section at the same time.<br>
 Add <b><i>is-active</i></b> class to create the accordion opening a section by default.</p>
