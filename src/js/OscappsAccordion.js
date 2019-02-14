@@ -25,7 +25,13 @@ class OscappsAccordion {
    * Crea una instancia de OscappsAccordion sobre una "description list" (dl). Trata los valores de las opciones de creación.
    *
    * @param {object} element elemento DOM sobre el que se va a crear el efecto acordeón
-   * @param {object} {} opciones de creación del plugin con los valores por defecto inicializados
+   * @param {object} options opciones de creación del plugin con los valores por defecto inicializados
+   * @param {boolean} options.arrowIcon true si se quiere el icono que indica si la sección está abierta o cerrada
+   * @param {boolean} options.multipleSelection true si se quiere abrir más de una sección a la vez
+   * @param {array} options.ajaxContent lista de objetos que indican una url y el índice de una sección para poner
+   * como contenido de esa sección el html que haya en esa url
+   * @param {function} options.onOpen callback opcional a ejecutar al abrir una sección
+   * @param {integer} options.animationTime tiempo de animación al mostrar u ocultar una sección
    * @memberof OscappsAccordion
    */
   constructor (element, {
@@ -145,7 +151,7 @@ class OscappsAccordion {
     if (DomLib.hasClass(element, ACTIVE_CLASS_NAME)) {
       this._hideSection(element)
     } else {
-      !this.multipleSelection && this._hideOtherActiveSection(element)
+      !this.multipleSelection && this.closeAll(element)
 
       this._showSection(element)
     }
@@ -178,20 +184,6 @@ class OscappsAccordion {
     this._setMaxHeightContentSectionToFull(element)
 
     this._isFunction(this.onOpen) && this.onOpen()
-  }
-
-  /**
-   * Oculta la sección activa en caso que exista.
-   *
-   * @private
-   * @memberof OscappsAccordion
-   */
-  _hideOtherActiveSection () {
-    const activeElement = this.OscappsAccordionElement.querySelector(`.${ACTIVE_CLASS_NAME}`)
-
-    if (activeElement && activeElement.parentElement === this.OscappsAccordionElement) {
-      this._hideSection(activeElement)
-    }
   }
 
   /**
@@ -351,7 +343,7 @@ class OscappsAccordion {
 
     if (elementSection) {
       if (!allowMultiple && !this.multipleSelection) {
-        this._hideOtherActiveSection()
+        this.closeAll()
       }
 
       this._showSection(elementSection)
@@ -422,14 +414,16 @@ class OscappsAccordion {
   * Abre la sección identificada con el índice si está cerrada o la cierra si está abierta.
   *
   * @param {integer} indexSection índice de la sección a abrir o cerrar
+  * @param {boolean} [allowMultiple] opcional, si es true permite abrir varias secciones al mismo tiempo
+  * independientemente de si estuviera definida como selección múltiple o no.
   * @returns {object} retorna la propia clase para poder encadenar métodos
   * @memberof OscappsAccordion
   */
-  toggle (indexSection) {
+  toggle (indexSection, allowMultiple = false) {
     if (this.isOpen(indexSection)) {
       this.close(indexSection)
     } else {
-      this.open(indexSection)
+      this.open(indexSection, allowMultiple)
     }
 
     return this

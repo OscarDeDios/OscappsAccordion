@@ -217,9 +217,9 @@ Close all the sections.
 instance.closeAll()
 ```
 
-#### toggle (indexSection)
+#### toggle (indexSection, allowMultiple)
 
-Open the section specified in the parameter if it's closed, or closes it if it's open.
+Open the section specified in the parameter if it's closed, or closes it if it's open. It's possible to force the opening of the section without close other active section's even the accordion was not created as multiple selection. To do this pass true as second parameter (by default is false).
 
 ```javascript
 instance.toggle(2)
