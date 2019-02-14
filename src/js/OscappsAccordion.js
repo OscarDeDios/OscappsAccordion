@@ -1,19 +1,19 @@
 import DomLib from './lib/DomLib'
 
-const MAIN_CLASS_NAME = 'OscappsAccordion'
-const HEADER_CLASS_NAME = 'OscappsAccordion-header'
-const SECTION_CLASS_NAME = 'OscappsAccordion-section'
-const ACTIVE_CLASS_NAME = 'is-active'
-const HIDE_ICON_CLASS_NAME = 'OscappsAccordion--hidden-icon'
-const MULTIPLE_SELECTION_CLASS_NAME = 'is-multiple-selection'
+export const MAIN_CLASS_NAME = 'OscappsAccordion'
+export const HEADER_CLASS_NAME = 'OscappsAccordion-header'
+export const SECTION_CLASS_NAME = 'OscappsAccordion-section'
+export const ACTIVE_CLASS_NAME = 'is-active'
+export const HIDE_ICON_CLASS_NAME = 'OscappsAccordion--hidden-icon'
+export const MULTIPLE_SELECTION_CLASS_NAME = 'is-multiple-selection'
 
-const HEADER_SECTION_SELECTOR = `.${MAIN_CLASS_NAME} > dt, .${MAIN_CLASS_NAME} > .${HEADER_CLASS_NAME}`
-const CONTENT_SECTION_SELECTOR = `.${MAIN_CLASS_NAME} > dd, .${MAIN_CLASS_NAME} > .${SECTION_CLASS_NAME}`
-const TOGGLE_OSCAPPS_ACCORDION_TAG_NAME = 'DT'
+export const HEADER_SECTION_SELECTOR = `.${MAIN_CLASS_NAME} > dt, .${MAIN_CLASS_NAME} > .${HEADER_CLASS_NAME}`
+export const CONTENT_SECTION_SELECTOR = `.${MAIN_CLASS_NAME} > dd, .${MAIN_CLASS_NAME} > .${SECTION_CLASS_NAME}`
+export const TOGGLE_OSCAPPS_ACCORDION_TAG_NAME = 'DT'
 
-const AJAX_SPINNER = '<div class="OscappsSpinner"><div class="OscappsSpinner-ring"></div></div>'
-const AJAX_READ_MARK = 'content-loaded'
-const AJAX_LOAD_ERROR = 'Loading error'
+export const AJAX_SPINNER = '<div class="OscappsSpinner"><div class="OscappsSpinner-ring"></div></div>'
+export const AJAX_READ_MARK = 'content-loaded'
+export const AJAX_LOAD_ERROR = 'Loading error'
 
 /**
  * Plugin para mostrar y ocultar secciones de una lista con un efecto de "deslizamiento"
@@ -35,7 +35,7 @@ class OscappsAccordion {
     onOpen = false,
     animationTime = false
   } = {}) {
-    if (!element) {
+    if (!element || !DomLib.isDomElement(element)) {
       return false
     }
 
@@ -341,18 +341,28 @@ class OscappsAccordion {
    * Abre la sección con el índice pasado como parámetro.
    *
    * @param {integer} indexSection índice de la sección a abrir
+   * @param {boolean} [allowMultiple] opcional, si es true permite abrir varias secciones al mismo tiempo
+   * independientemente de si estuviera definida como selección múltiple o no.
    * @returns {object} retorna la propia clase para poder encadenar métodos
    * @memberof OscappsAccordion
    */
-  open (indexSection) {
+  open (indexSection, allowMultiple = false) {
     const elementSection = this._getElementSectionByIndex(indexSection)
-    elementSection && this._showSection(elementSection)
+
+    if (elementSection) {
+      if (!allowMultiple && !this.multipleSelection) {
+        this._hideOtherActiveSection()
+      }
+
+      this._showSection(elementSection)
+    }
 
     return this
   }
 
   /**
-  * Abre todas las secciones
+  * Abre todas las secciones. Se permite abrir todas aunque no sea un acordeón
+  * de selección múltiple.
   *
   * @returns {object} retorna la propia clase para poder encadenar métodos
   * @memberof OscappsAccordion

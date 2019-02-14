@@ -185,17 +185,17 @@ const instance = new OscappsAccordion(dlElement, {
 
 ## Methods
 
-#### open
+#### open (indexSection, allowMultiple)
 
-Open the section specified in the parameter (first section is 0).
+Open the section specified in the parameter (first section is 0). It's possible to force the opening of the section without close other active section's even the accordion was not created as multiple selection. To do this pass true as second parameter (by default is false).
 
 ```javascript
-instance.open(2)
+instance.open(2, true)
 ```
 
 #### openAll
 
- Open all the sections.
+ Open all the sections even the accordion was not created with multiple-selection option.
 
 ```javascript
 instance.openAll()
@@ -217,7 +217,7 @@ Close all the sections.
 instance.closeAll()
 ```
 
-#### toggle
+#### toggle (indexSection)
 
 Open the section specified in the parameter if it's closed, or closes it if it's open.
 
@@ -225,7 +225,7 @@ Open the section specified in the parameter if it's closed, or closes it if it's
 instance.toggle(2)
 ```
 
-#### isOpen
+#### isOpen (indexSection)
 
 Return if the section specified in the parameter is open.
 
