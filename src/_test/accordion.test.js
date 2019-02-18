@@ -1,4 +1,5 @@
 /* eslint-disable import/no-duplicates */
+import 'whatwg-fetch'
 import {
   getByText
 } from 'dom-testing-library'
@@ -12,7 +13,8 @@ import {
   ACTIVE_CLASS_NAME,
   HEADER_CLASS_NAME,
   SECTION_CLASS_NAME,
-  HEADER_SECTION_SELECTOR
+  HEADER_SECTION_SELECTOR,
+  AJAX_LOAD_ERROR
 } from '../js/OscappsAccordion'
 
 const getDlElement = () => {
@@ -41,13 +43,13 @@ const getDivElement = () => {
   const div = document.createElement('div')
 
   div.innerHTML = `
-  <div class="${HEADER_CLASS_NAME}">
+  <div class="${HEADER_CLASS_NAME} ${ACTIVE_CLASS_NAME}">
     Section 1
   </div>
   <div class="${SECTION_CLASS_NAME}">
     Content Section 1
   </div>
-  <div class="${HEADER_CLASS_NAME}">
+  <div class="${HEADER_CLASS_NAME} ${ACTIVE_CLASS_NAME}">
     Section 2
   </div>
   <div class="${SECTION_CLASS_NAME}">
@@ -83,6 +85,23 @@ describe('Simple OscappsAccordion', () => {
 
     it('should be the only one active class', () => {
       expect(OscappsAccordionElement.querySelectorAll(`.${ACTIVE_CLASS_NAME}`).length).toBe(1)
+    })
+  })
+
+  describe('when click section 1 twice', () => {
+    beforeAll(() => {
+      oscappsAccordion.closeAll()
+    })
+
+    it('should not have active className in Section 1', () => {
+      getByText(OscappsAccordionElement, 'Section 1').click()
+      getByText(OscappsAccordionElement, 'Section 1').click()
+
+      expect(getByText(OscappsAccordionElement, 'Section 1')).not.toHaveClass(ACTIVE_CLASS_NAME)
+    })
+
+    it('should not be any active class', () => {
+      expect(OscappsAccordionElement.querySelectorAll(`.${ACTIVE_CLASS_NAME}`).length).toBe(0)
     })
   })
 
@@ -224,7 +243,7 @@ describe('Multiple Selection OscappsAccordion', () => {
   })
 })
 
-describe('OscappsAccordion with div\'s', () => {
+describe('OscappsAccordion with div\'s with the fist section opened by default', () => {
   const OscappsAccordionWithDivs = getDivElement()
   const OscappsAccordion3 = new OscappsAccordion(OscappsAccordionWithDivs, { multipleSelection: true })
 
@@ -232,7 +251,16 @@ describe('OscappsAccordion with div\'s', () => {
     expect(OscappsAccordion3).toBeInstanceOf(OscappsAccordion)
   })
 
+  it('should create the accordion with first and second sections opened by default', () => {
+    expect(getByText(OscappsAccordionWithDivs, 'Section 1')).toHaveClass(ACTIVE_CLASS_NAME)
+    expect(getByText(OscappsAccordionWithDivs, 'Section 2')).toHaveClass(ACTIVE_CLASS_NAME)
+  })
+
   describe('when click section 1', () => {
+    beforeAll(() => {
+      OscappsAccordion3.closeAll()
+    })
+
     it('should add active className to Section 1', () => {
       getByText(OscappsAccordionWithDivs, 'Section 1').click()
 
@@ -258,5 +286,57 @@ describe('OscappsAccordion with div\'s', () => {
     it('should not remove active class from Section 1 (multiple selection)', () => {
       expect(getByText(OscappsAccordionWithDivs, 'Section 1')).toHaveClass(ACTIVE_CLASS_NAME)
     })
+  })
+})
+
+describe('when create an OscappsAccordion with ajax content', () => {
+  const htmlFileContent = '<div>HTML content</div>'
+
+  const OscappsAccordionElement = getDlElement()
+  const oscappsAccordion4 = new OscappsAccordion(OscappsAccordionElement, {
+    ajaxContent: [{
+      indexSection: 0,
+      url: 'http://server.com/ajaxContent'
+    }],
+    animationTime: 600
+  })
+
+  const mockResponse = (status, statusText, response) => {
+    return new window.Response(response, {
+      status: status,
+      statusText: statusText
+    })
+  }
+
+  window.fetch = jest.fn().mockImplementation((url) => {
+    if (url === 'http://server.com/ajaxContent') {
+      return Promise.resolve(mockResponse(200, null, htmlFileContent))
+    } else {
+      return Promise.reject(mockResponse(500, null, ''))
+    }
+  })
+
+  it('should create an instance of OscappsAccordion', () => {
+    expect(oscappsAccordion4).toBeInstanceOf(OscappsAccordion)
+  })
+
+  it('should access to ajax content and insert it in the first content section', async () => {
+    await oscappsAccordion4._checkAjaxSection(getByText(OscappsAccordionElement, 'Section 1'))
+
+    expect(getByText(OscappsAccordionElement, 'Section 1').nextElementSibling.innerHTML).toBe(htmlFileContent)
+  })
+
+  it('should access to ajax content and insert loading error message if the url is wrong', async () => {
+    const OscappsAccordionElement2 = getDlElement()
+    const oscappsAccordion5 = new OscappsAccordion(OscappsAccordionElement2, {
+      ajaxContent: [{
+        indexSection: 0,
+        url: 'http://server.com/noExistingUrl'
+      }]
+    })
+
+    await oscappsAccordion5._checkAjaxSection(getByText(OscappsAccordionElement2, 'Section 1'))
+
+    expect(getByText(OscappsAccordionElement2, 'Section 1').nextElementSibling.innerHTML).toBe(AJAX_LOAD_ERROR)
   })
 })
