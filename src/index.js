@@ -1,6 +1,3 @@
-import 'babel-polyfill'
-import 'whatwg-fetch'
-
 import OscappsAccordion from './js/OscappsAccordion'
 
 import './scss/styles.scss'

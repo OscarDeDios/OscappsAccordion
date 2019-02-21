@@ -84,7 +84,7 @@ $OscappsAccordion-animation-default-time: 0.6s;
     border-radius: 50%;
     border: 5px solid #000;
     border-color: #000 transparent #000 transparent;
-    animation: OscappsSpinner--ring 1.2s linear infinite;
+    animation: OscappsSpinner-ring 1.2s linear infinite;
   }
 
   @keyframes OscappsSpinner-ring {

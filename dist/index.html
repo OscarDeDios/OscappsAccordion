@@ -11,22 +11,20 @@
     </style>
     <script>
       document.addEventListener('DOMContentLoaded', function () {
-        const instance = new OscappsAccordion(document.getElementById('OscappsAccordion-jax'), {
+        const instance = new OscappsAccordion(document.getElementById('OscappsAccordion-ajax'), {
           animationTime: 800,
-          arrowIcon:false
+          arrowIcon:false,
+          ajaxContent: [
+            {
+              url: 'https://oscardedios.github.io/assets/ajaxContent1.html',
+              indexSection: 1
+            }, {
+              url: 'https://oscardedios.github.io/assets/ajaxContent2.html',
+              indexSection: 0
+            }
+          ]
         })
-
-        setTimeout(function () {
-          instance.toggle(1)
-        }, 2000)
-
-        setTimeout(function () {
-          instance.toggle(1)
-        }, 4000)
-
-        // const OscappsAccordion1 = new OscappsAccordion(document.getElementById('OscappsAccordion1'))
-        // const OscappsAccordion2 = new OscappsAccordion(document.getElementById('OscappsAccordion2'), { multipleSelection: false })
-        // console.log(OscappsAccordion2)
+        // setTimeout(function () { instance.open(0).open(1)} ,1000)
       })
     </script>
 

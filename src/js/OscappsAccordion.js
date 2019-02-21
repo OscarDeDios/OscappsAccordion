@@ -217,7 +217,7 @@ class OscappsAccordion {
   * @param {object} element elemento DOM, cabecera de sección que se quiere mostrar.
   * @memberof OscappsAccordion
   */
-  async _checkAjaxSection (element) {
+  _checkAjaxSection (element) {
     const headerSections = this._getHeaderSections()
 
     var index = this._getIndexElement(headerSections, element)
@@ -229,14 +229,19 @@ class OscappsAccordion {
 
         contentSection.innerHTML = AJAX_SPINNER
 
-        const htmlContent = await this._getAjaxData(ajaxContent.url)
-
-        contentSection.innerHTML = htmlContent
-        this._setMaxHeightContentSectionToFull(headerSection)
-
-        this._markAsRead(headerSections[index])
+        this._getAjaxData(ajaxContent.url, (htmlContent) => {
+          this._putContentInElement(headerSection, contentSection, htmlContent)
+          this._markAsRead(headerSections[index])
+        }, () => {
+          this._putContentInElement(headerSection, contentSection, AJAX_LOAD_ERROR)
+        })
       }
     }
+  }
+
+  _putContentInElement (headerSection, contentSection, htmlContent) {
+    contentSection.innerHTML = htmlContent
+    this._setMaxHeightContentSectionToFull(headerSection)
   }
 
   /**
@@ -307,14 +312,23 @@ class OscappsAccordion {
    * @private
    * @memberof OscappsAccordion
    */
-  _getAjaxData (url) {
-    return fetch(url)
-      .then((response) => {
-        return response.text()
-      })
-      .catch((response) => {
-        return AJAX_LOAD_ERROR
-      })
+  _getAjaxData (url, succesCallback, errorCallback) {
+    const request = new XMLHttpRequest()
+    request.open('GET', url, true)
+
+    request.onload = () => {
+      if (request.status >= 200 && request.status < 400) {
+        this._isFunction(succesCallback) && succesCallback(request.responseText)
+      } else {
+        this._isFunction(errorCallback) && errorCallback()
+      }
+    }
+
+    request.onerror = () => {
+      this._isFunction(errorCallback) && errorCallback()
+    }
+
+    request.send()
   }
 
   /**

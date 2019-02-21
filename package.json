@@ -1,6 +1,6 @@
 {
   "name": "oscapps-accordion",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "author": "Oscar de Dios Rodriguez",
   "description": "OscappsAccordion component",
   "keywords": [
@@ -50,9 +50,5 @@
     "webpack": "3.5.5",
     "webpack-dev-server": "2.7.1",
     "webpack-merge": "4.1.0"
-  },
-  "dependencies": {
-    "babel-polyfill": "^6.26.0",
-    "whatwg-fetch": "^3.0.0"
   }
 }
